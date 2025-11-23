@@ -21,7 +21,6 @@ public abstract class BaseTest {
 
     @AfterEach
     void tearDown(TestInfo testInfo) {
-        DriverManager.getInstance().takeScreenshot(testInfo.getDisplayName());
         DriverManager.getInstance().quitDriver();
     }
 }
