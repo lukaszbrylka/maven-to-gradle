@@ -4,6 +4,7 @@ import com.lukasz.ui.data.UserFactory;
 import com.lukasz.ui.models.UserDTO;
 import com.lukasz.ui.steps.factory.LoginFlowFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 public class LoginTest extends BaseTest {
@@ -16,6 +17,7 @@ public class LoginTest extends BaseTest {
         System.out.println("[Thread-" + Thread.currentThread().threadId() + "] BeforeEach: User generated");
     }
 
+    @Tag("smoke")
     @Test
     void testExistingUserSuccessfulLogin() {
         System.out.println("[Thread-" + Thread.currentThread().threadId() + "] Running testExistingUserSuccessfulLogin");
