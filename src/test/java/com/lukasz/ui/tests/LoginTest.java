@@ -13,10 +13,12 @@ public class LoginTest extends BaseTest {
     @BeforeEach
     void generateUser() {
         existingUser = UserFactory.getExistingUser();
+        System.out.println("[Thread-" + Thread.currentThread().threadId() + "] BeforeEach: User generated");
     }
 
     @Test
     void testExistingUserSuccessfulLogin() {
+        System.out.println("[Thread-" + Thread.currentThread().threadId() + "] Running testExistingUserSuccessfulLogin");
         LoginFlowFactory
                 .successfulLogin(driver, existingUser, existingUser.getUsername())
                 .act();
@@ -24,10 +26,10 @@ public class LoginTest extends BaseTest {
 
     @Test
     void testExistingUserInvalidPasswordUnsuccessfulLogin() {
-        existingUser.
-                setPassword("invalid");
-        LoginFlowFactory.
-                unsuccessfulLogin(driver, existingUser, "Wrong email/password combination")
+        System.out.println("[Thread-" + Thread.currentThread().threadId() + "] Running testExistingUserInvalidPasswordUnsuccessfulLogin");
+        existingUser.setPassword("invalid");
+        LoginFlowFactory
+                .unsuccessfulLogin(driver, existingUser, "Wrong email/password combination")
                 .act();
     }
 }

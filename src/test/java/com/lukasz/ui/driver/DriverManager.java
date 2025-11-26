@@ -8,12 +8,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DriverManager {
     private static DriverManager instance;
-    private WebDriver driver;
+    private static final ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
 
     private DriverManager() {
     }
 
-    public static DriverManager getInstance() {
+    public static synchronized DriverManager getInstance() {
         if (instance == null) {
             instance = new DriverManager();
         }
@@ -21,27 +21,27 @@ public class DriverManager {
     }
 
     public WebDriver getDriver(String browser) {
-        if (driver == null) {
+        if (driverThreadLocal.get() == null) {
             switch (browser.toLowerCase()) {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
+                    driverThreadLocal.set(new ChromeDriver());
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver();
+                    driverThreadLocal.set(new FirefoxDriver());
                     break;
                 default:
                     throw new IllegalArgumentException("Unsupported browser: " + browser);
             }
         }
-        return driver;
+        return driverThreadLocal.get();
     }
 
     public void quitDriver() {
-        if (driver != null) {
-            driver.quit();
-            instance = null;
+        if (driverThreadLocal.get() != null) {
+            driverThreadLocal.get().quit();
+            driverThreadLocal.remove();
         }
     }
 }
